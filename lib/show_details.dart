@@ -32,7 +32,6 @@ class _MovieDetailState extends State<MovieDetail> {
         title: Text(
           'Details',
           style: TextStyle(
-//            color: Colors.white,
             fontSize: 20,
           ),
         ),
@@ -81,62 +80,62 @@ class ShowMovieDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       body: Stack(fit: StackFit.expand, children: [
-        new Image.network(
+        Image.network(
           displayMovie.showImage.original.toString(),
           fit: BoxFit.cover,
         ),
-        new BackdropFilter(
-          filter: new ui.ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-          child: new Container(
+        BackdropFilter(
+          filter: ui.ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+          child: Container(
             color: Colors.black.withOpacity(0.5),
           ),
         ),
-        new SingleChildScrollView(
-          child: new Container(
+        SingleChildScrollView(
+          child: Container(
             margin: const EdgeInsets.all(20.0),
-            child: new Column(
+            child: Column(
               children: <Widget>[
-                new Container(
+                Container(
                   alignment: Alignment.center,
-                  child: new Container(
+                  child: Container(
                     width: 400.0,
                     height: 400.0,
                   ),
-                  decoration: new BoxDecoration(
-                    borderRadius: new BorderRadius.circular(10.0),
-                    image: new DecorationImage(
-                        image: new NetworkImage(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    image: DecorationImage(
+                        image: NetworkImage(
                             displayMovie.showImage.original.toString()),
                         fit: BoxFit.cover),
                     boxShadow: [
-                      new BoxShadow(
+                      BoxShadow(
 //                          color: Colors.black,
                           blurRadius: 20.0,
-                          offset: new Offset(0.0, 10.0))
+                          offset: Offset(0.0, 10.0))
                     ],
                   ),
                 ),
-                new Container(
+                Container(
                   margin: const EdgeInsets.symmetric(
                       vertical: 20.0, horizontal: 0.0),
-                  child: new Row(
+                  child: Row(
                     children: <Widget>[
-                      new Expanded(
-                          child: new Text(
+                      Expanded(
+                          child: Text(
                         displayMovie.name,
-                        style: new TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 30.0,
                         ),
                       )),
-                      new Text(
+                      Text(
                         displayMovie.rating.rating.toString() == "null"
                             ? "**" + "/10"
                             : displayMovie.rating.rating.toString() + "/10",
 //                      '${widget.movie['vote_average']}/10',
-                        style: new TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 20.0,
                         ),
@@ -144,7 +143,7 @@ class ShowMovieDetail extends StatelessWidget {
                     ],
                   ),
                 ),
-                new Html(
+                Html(
                   data: displayMovie.summary,
                   style: {
                     "body": Style(
@@ -153,29 +152,72 @@ class ShowMovieDetail extends StatelessWidget {
                     ),
                   },
                 ),
-                new Padding(padding: const EdgeInsets.all(10.0)),
-                new Row(
+                Padding(padding: const EdgeInsets.all(10.0)),
+                Center(
+                  child: displayMovie.embedded.cast.length == 0 ? Column() :Column(
+                    children: <Widget>[
+                      Text(
+                        "CASTS",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 36.0,
+                        ),
+                      ),
+                      
+                      Padding(padding: const EdgeInsets.all(10.0)),
+                      SizedBox(
+                        height: 230,
+                        child: GridView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: displayMovie.embedded.cast.length,
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 230,
+                              crossAxisSpacing: 10.0,
+                              mainAxisSpacing: 35.0,
+                            ),
+                            itemBuilder: (context, index) => Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Center(
+                                        child: GestureDetector(
+                                          onTap: () {print("Tapped ${displayMovie.embedded
+                                                .cast[index].person.name}");},
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(8),
+                                            child: Image.network(displayMovie.embedded
+                                                .cast[index].person.image.medium
+                                                .toString()),
+                                          ),
+                                        )),
+                                  ),
+                                )),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(padding: const EdgeInsets.all(10.0)),
+                Row(
                   children: <Widget>[
-                    new Expanded(
-                        child: new Container(
+                    Expanded(
+                        child: Container(
                       width: 150.0,
                       height: 60.0,
                       alignment: Alignment.center,
-                      child: new Text(
+                      child: Text(
                         'Rate Movie',
-                        style:
-                            new TextStyle(color: Colors.white, fontSize: 20.0),
+                        style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
-                      decoration: new BoxDecoration(
-                          borderRadius: new BorderRadius.circular(10.0),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
                           color: const Color(0xaa3C3261)),
                     )),
-                    new Padding(
+                    Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: new Container(
+                        child: Container(
                           padding: const EdgeInsets.all(16.0),
                           alignment: Alignment.center,
-                          child: new IconButton(
+                          child: IconButton(
                             icon: const Icon(Icons.link),
                             color: Colors.white,
                             onPressed: () async {
@@ -190,8 +232,8 @@ class ShowMovieDetail extends StatelessWidget {
                               }
                             },
                           ),
-                          decoration: new BoxDecoration(
-                              borderRadius: new BorderRadius.circular(10.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
                               color: const Color(0xaa3C3261)),
                         )),
                   ],
@@ -203,6 +245,11 @@ class ShowMovieDetail extends StatelessWidget {
       ]),
     );
   }
+}
+
+clicked(int index) {
+  DetailShow imageCast; 
+  print("Tapped ${imageCast.embedded.cast[index].person}");
 }
 
 class Error extends StatelessWidget {

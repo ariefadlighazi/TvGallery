@@ -138,9 +138,9 @@ class ShowList extends StatelessWidget {
       Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: [Colors.lime, Colors.deepOrange],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter),
+              colors: [Colors.black54, Colors.black],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight),
         ),
       ),
       ListView.builder(
@@ -151,7 +151,7 @@ class ShowList extends StatelessWidget {
               height: 220,
               width: double.maxFinite,
               child: Card(
-                color: Colors.black54,
+                color: Colors.black45,
                 elevation: 5,
                 child: Padding(
                   padding: EdgeInsets.all(7),
@@ -258,7 +258,12 @@ class ShowList extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: TextButton(
-                          child: Text('Details >>'),
+                          child: RichText(text: TextSpan(
+                            children: [
+                              TextSpan(text: "Details ", style: TextStyle(fontSize: 20)),
+                              WidgetSpan(child: Icon(Icons.info_outline, size:20, color: Colors.white,))
+                            ]
+                          ),),
                           style: TextButton.styleFrom(
                             primary: Colors.black,
                             backgroundColor: Colors.white30,
