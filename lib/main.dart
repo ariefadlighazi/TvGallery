@@ -179,15 +179,18 @@ class ShowList extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Container(
-                                              color: Colors.white,
+                                              //color: Colors.white,
                                               width: 140,
                                               height: 150,
-                                              child: Image(
-                                                image: NetworkImage(shows[index]
-                                                    .show
-                                                    .image
-                                                    .medium),
-                                                fit: BoxFit.fill,
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(8),
+                                                child: Image(
+                                                  image: NetworkImage(shows[index]
+                                                      .show
+                                                      .image
+                                                      .medium),
+                                                  fit: BoxFit.fill,
+                                                ),
                                               ),
                                             ),
                                             Column(

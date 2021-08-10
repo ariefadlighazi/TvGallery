@@ -154,47 +154,89 @@ class ShowMovieDetail extends StatelessWidget {
                 ),
                 Padding(padding: const EdgeInsets.all(10.0)),
                 Center(
-                  child: displayMovie.embedded.cast.length == 0 ? Column() :Column(
-                    children: <Widget>[
-                      Text(
-                        "CASTS",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 36.0,
-                        ),
-                      ),
-                      
-                      Padding(padding: const EdgeInsets.all(10.0)),
-                      SizedBox(
-                        height: 230,
-                        child: GridView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: displayMovie.embedded.cast.length,
-                            gridDelegate:
-                                SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 230,
-                              crossAxisSpacing: 10.0,
-                              mainAxisSpacing: 35.0,
+                  child: displayMovie.embedded.cast.length == 0
+                      ? Column()
+                      : Column(
+                          children: <Widget>[
+                            Text(
+                              "CASTS",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 36.0,
+                              ),
                             ),
-                            itemBuilder: (context, index) => Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20),
-                                    child: Center(
-                                        child: GestureDetector(
-                                          onTap: () {print("Tapped ${displayMovie.embedded
-                                                .cast[index].person.name}");},
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(8),
-                                            child: Image.network(displayMovie.embedded
-                                                .cast[index].person.image.medium
-                                                .toString()),
-                                          ),
-                                        )),
+                            Padding(padding: const EdgeInsets.all(10.0)),
+                            SizedBox(
+                              height: 260,
+                              child: GridView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: displayMovie.embedded.cast.length,
+                                  gridDelegate:
+                                      SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 260,
+                                    crossAxisSpacing: 5.0,
+                                    mainAxisSpacing: 1.0,
                                   ),
-                                )),
-                      )
-                    ],
-                  ),
+                                  itemBuilder: (context, index) => Container(
+                                    //color: Colors.amber,
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              flex: 8,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                child: Center(
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      print(
+                                                          "Tapped ${displayMovie.embedded.cast[index].person.name}");
+                                                    },
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      child: displayMovie
+                                                                  .embedded
+                                                                  .cast[index]
+                                                                  .person
+                                                                  .image
+                                                                  .medium ==
+                                                              null
+                                                          ? Image.network(
+                                                              'https://i.ibb.co/2PD1gbH/Hnet-com-image.jpg',
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                          : Image.network(
+                                                              displayMovie
+                                                                  .embedded
+                                                                  .cast[index]
+                                                                  .person
+                                                                  .image
+                                                                  .medium
+                                                                  .toString()),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                displayMovie.embedded
+                                                    .cast[index].person.name,
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: Colors.white),
+                                                overflow: TextOverflow.fade,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )),
+                            ),
+                          ],
+                        ),
                 ),
                 Padding(padding: const EdgeInsets.all(10.0)),
                 Row(
@@ -248,7 +290,7 @@ class ShowMovieDetail extends StatelessWidget {
 }
 
 clicked(int index) {
-  DetailShow imageCast; 
+  DetailShow imageCast;
   print("Tapped ${imageCast.embedded.cast[index].person}");
 }
 

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+Map<String, dynamic> jsonData = '{"medium": "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg","original": "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"}' as Map<String, dynamic>;
+
 class DetailShow {
   final String name, type, language, premiered, officialSite, summary, url;
   final ShowImage showImage;
@@ -114,10 +116,12 @@ class Person {
   Person({this.url, this.name, this.image});
 
   factory Person.fromJson(Map<String, dynamic> object) {
+    print(object['image']);
     return Person(
+      
         url: object['url'],
         name: object['name'],
-        image: ImageCast.fromJson(object['image']));
+        image: ImageCast?.fromJson(object['image'] ??= object['_links']));
   }
 }
 
