@@ -111,7 +111,6 @@ class ShowMovieDetail extends StatelessWidget {
                         fit: BoxFit.cover),
                     boxShadow: [
                       BoxShadow(
-//                          color: Colors.black,
                           blurRadius: 20.0,
                           offset: Offset(0.0, 10.0))
                     ],
@@ -139,7 +138,8 @@ class ShowMovieDetail extends StatelessWidget {
                           color: Colors.white,
                           fontSize: 20.0,
                         ),
-                      )
+                      ),
+                      //Text(displayMovie.genre.toString())
                     ],
                   ),
                 ),

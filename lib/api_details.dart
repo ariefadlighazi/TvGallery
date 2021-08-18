@@ -10,7 +10,7 @@ class DetailShow {
   final ShowImage showImage;
   final Rating rating;
   final Embedded embedded;
-  //final List<String> genre;
+  final List<String> genre;
   DetailShow(
       {this.name,
       this.type,
@@ -21,7 +21,8 @@ class DetailShow {
       this.showImage,
       this.rating,
       this.url,
-      this.embedded
+      this.embedded,
+      this.genre,
       /*required this.genre*/
       });
 
@@ -29,7 +30,11 @@ class DetailShow {
     //var genreFromJson = parsedJson['genre'];
     //List<String> genreList = genreFromJson.cast<String>();
     //var listOfCast = (parsedJson['_embedded'] as List).map((i) => Cast.fromJson(i));
-    print(parsedJson['_embedded']);
+    //print(parsedJson['_embedded']);
+    /*var genreFromJson = parsedJson['genres'];
+    List<String> genreList = genreFromJson.cast<String>();
+    print(genreList);*/
+    print(Embedded.fromJson(parsedJson['_embedded']));
 
     return new DetailShow(
         name: parsedJson['name'],
@@ -42,8 +47,10 @@ class DetailShow {
         url: parsedJson['url'],
         showImage:
             ShowImage?.fromJson(parsedJson['image'] ??= parsedJson['network']),
+        genre: List<String>.from(parsedJson['genres']),
+        embedded: Embedded.fromJson(parsedJson['_embedded']),
         /*genre: genreList*/
-        embedded: Embedded.fromJson(parsedJson['_embedded']));
+        );
   }
 
   static Future<DetailShow> connectToAPI(String id) async {
@@ -70,6 +77,7 @@ class ShowImage {
     );
   }
 }
+
 
 class Rating {
   final double rating;

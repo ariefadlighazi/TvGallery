@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:latian_jsonparse/show_details.dart';
 
 import 'api_details.dart';
-
 
 Future<List<ListShow>> fetchList(http.Client client) async {
   final response =
@@ -39,29 +39,23 @@ class ListShow {
 }
 
 class Show {
-  final String id;
-  final String name;
-  final String premiered;
+  final String name, id, premiered;
+  final List<String> genre;
   //String medium;
-  ShowImage image;
+  final ShowImage image;
 
-  Show({
-    this.id,
-    this.name,
-    this.premiered,
-    this.image,
-    /*this.medium*/
-  });
+  Show({this.id, this.name, this.premiered, this.image, this.genre});
 
   factory Show.fromJson(Map<String, dynamic> object) {
-    print(object['image']);
+    print(object['genres']);
     return Show(
-        id: object['id'].toString(),
-        name: object['name'] == null ? "" : object['name'] as String,
-        premiered:
-            object['premiered'] == null ? "" : object['premiered'] as String,
-        //medium: object['medium'],
-        image: ShowImage?.fromJson(object['image'] ??= object['network']));
+      id: object['id'].toString(),
+      name: object['name'] == null ? "" : object['name'] as String,
+      premiered:
+          object['premiered'] == null ? "" : object['premiered'] as String,
+      image: ShowImage?.fromJson(object['image'] ??= object['rating']),
+      genre: List<String>.from(object['genres']),
+    );
   }
 }
 
@@ -72,7 +66,7 @@ class ShowImage {
   ShowImage({this.medium, this.original});
 
   factory ShowImage.fromJson(Map<String, dynamic> object) {
-    //print(object);
+    print(object['medium']);
     return ShowImage(
       medium: object['medium'] == null ? "" : object['medium'],
       original: object['original'] == null ? "" : object['original'],
@@ -183,12 +177,19 @@ class ShowList extends StatelessWidget {
                                               width: 140,
                                               height: 150,
                                               child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(8),
-                                                child: Image(
-                                                  image: NetworkImage(shows[index]
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                child: Image.network(
+                                                  shows[index]
                                                       .show
                                                       .image
-                                                      .medium),
+                                                      .medium,
+                                                  errorBuilder: (context, error,
+                                                      stackTrace) {
+                                                    return Image.network(
+                                                        'https://i.ibb.co/2PD1gbH/Hnet-com-image.jpg',
+                                                        fit: BoxFit.fill);
+                                                  },
                                                   fit: BoxFit.fill,
                                                 ),
                                               ),
@@ -222,6 +223,7 @@ class ShowList extends StatelessWidget {
                                                                     .ellipsis,
                                                           ),
                                                         ),
+                                                        
                                                         Text(
                                                             "Premiered: " +
                                                                 shows[index]
@@ -230,14 +232,29 @@ class ShowList extends StatelessWidget {
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white)),
-                                                        Text(
-                                                            "Show ID: " +
-                                                                shows[index]
+                                                                    Padding(padding: const EdgeInsets.all(3.0)),
+                                                        shows[index]
                                                                     .show
-                                                                    .id,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white))
+                                                                    .genre
+                                                                    .toString() ==
+                                                                "[]"
+                                                            ? Text("")
+                                                            : Container(
+                                                              width: 150,
+                                                              child: Text(
+                                                                  shows[index]
+                                                                      .show
+                                                                      .genre
+                                                                      .toString(),
+                                                                  maxLines: 2,
+                                                                  //softWrap: false,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .fade,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white)),
+                                                            ),
                                                       ],
                                                     ),
                                                   ),
@@ -257,16 +274,23 @@ class ShowList extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(bottom: 1, right: 2),
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: TextButton(
-                          child: RichText(text: TextSpan(
-                            children: [
-                              TextSpan(text: "Details ", style: TextStyle(fontSize: 20)),
-                              WidgetSpan(child: Icon(Icons.info_outline, size:20, color: Colors.white,))
-                            ]
-                          ),),
+                          child: RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                  text: "Details ",
+                                  style: TextStyle(fontSize: 14)),
+                              WidgetSpan(
+                                  child: Icon(
+                                Icons.info_outline,
+                                size: 14,
+                                color: Colors.white,
+                              ))
+                            ]),
+                          ),
                           style: TextButton.styleFrom(
                             primary: Colors.black,
                             backgroundColor: Colors.white30,
