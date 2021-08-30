@@ -11,13 +11,13 @@ import 'api_details.dart';
 
 Future<List<ListShow>> fetchList(http.Client client) async {
   final response =
-      await client.get(Uri.parse('http://api.tvmaze.com/schedule'));
+      await client.get(Uri.parse('https://api.tvmaze.com/schedule?country=US'));
 
   // Use the compute function to run parsePhotos in a separate isolate.
   return compute(parseList, response.body);
 }
 
-// A function that converts a response body into a List<Photo>.
+// A function that converts a response body into a List<ListShow>.
 List<ListShow> parseList(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
@@ -47,7 +47,7 @@ class Show {
   Show({this.id, this.name, this.premiered, this.image, this.genre});
 
   factory Show.fromJson(Map<String, dynamic> object) {
-    print(object['genres']);
+    print(object['name']);
     return Show(
       id: object['id'].toString(),
       name: object['name'] == null ? "" : object['name'] as String,
@@ -76,7 +76,12 @@ class ShowImage {
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final appTitle = 'TVGallery';
@@ -88,11 +93,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   final String title;
 
   MyHomePage({Key key, this.title}) : super(key: key);
 
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,13 +130,57 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-class ShowList extends StatelessWidget {
+class ShowList extends StatefulWidget {
   final List<ListShow> shows;
-  DetailShow detailShow;
 
   ShowList({Key key, this.shows}) : super(key: key);
 
   @override
+  _ShowListState createState() => _ShowListState();
+}
+
+class _ShowListState extends State<ShowList> {
+  DetailShow detailShow;
+  TextEditingController editingController = TextEditingController();
+
+  var items = List<dynamic>();
+  String search = "anD";
+  void initState() {
+    items.addAll(widget.shows);
+    /*for (int i = 0; i < widget.shows.length; i++) {
+        ListShow data = widget.shows[i];
+        if (data.show.name.toLowerCase().contains(search.toLowerCase())) {
+          items.add(data);
+        }
+    }*/
+    super.initState();
+  }
+  
+void filterSearchResults(String query) {
+    List<dynamic> dummySearchList = List<dynamic>();
+    //dummySearchList.addAll(widget.shows);
+    if(query.isNotEmpty) {
+      //List<ListShow> dummyListData = List<ListShow>();
+      for (int i = 0; i < widget.shows.length; i++) {
+        ListShow data = widget.shows[i];
+        if (data.show.name.toLowerCase().contains(query.toLowerCase())) {
+          dummySearchList.add(data);
+        }
+    }
+      setState(() {
+        items.clear();
+        items.addAll(dummySearchList);
+      });
+      return;
+    } else {
+      setState(() {
+        items.clear();
+        items.addAll(widget.shows);
+      });
+    }
+  }
+
+  @override 
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(
@@ -138,7 +192,8 @@ class ShowList extends StatelessWidget {
         ),
       ),
       ListView.builder(
-          itemCount: shows.length,
+          padding: EdgeInsets.fromLTRB(5, 70, 5, 0),
+          itemCount: items.length,
           itemBuilder: (context, index) {
             return Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -180,7 +235,7 @@ class ShowList extends StatelessWidget {
                                                 borderRadius:
                                                     BorderRadius.circular(8),
                                                 child: Image.network(
-                                                  shows[index]
+                                                  items[index]
                                                       .show
                                                       .image
                                                       .medium,
@@ -209,7 +264,7 @@ class ShowList extends StatelessWidget {
                                                           width: 150,
                                                           height: 75,
                                                           child: Text(
-                                                            shows[index]
+                                                            items[index]
                                                                 .show
                                                                 .name
                                                                 .toUpperCase(),
@@ -223,38 +278,40 @@ class ShowList extends StatelessWidget {
                                                                     .ellipsis,
                                                           ),
                                                         ),
-                                                        
                                                         Text(
                                                             "Premiered: " +
-                                                                shows[index]
+                                                                items[index]
                                                                     .show
                                                                     .premiered,
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white)),
-                                                                    Padding(padding: const EdgeInsets.all(3.0)),
-                                                        shows[index]
+                                                        Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(3.0)),
+                                                        items[index]
                                                                     .show
                                                                     .genre
                                                                     .toString() ==
                                                                 "[]"
                                                             ? Text("")
                                                             : Container(
-                                                              width: 150,
-                                                              child: Text(
-                                                                  shows[index]
-                                                                      .show
-                                                                      .genre
-                                                                      .toString(),
-                                                                  maxLines: 2,
-                                                                  //softWrap: false,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .fade,
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white)),
-                                                            ),
+                                                                width: 150,
+                                                                child: Text(
+                                                                    items[index]
+                                                                        .show
+                                                                        .genre
+                                                                        .toString(),
+                                                                    maxLines: 2,
+                                                                    //softWrap: false,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .fade,
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white)),
+                                                              ),
                                                       ],
                                                     ),
                                                   ),
@@ -300,7 +357,7 @@ class ShowList extends StatelessWidget {
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => MovieDetail(
-                                    int.parse(shows[index].show.id))));
+                                    int.parse(items[index].show.id))));
                           },
                         ),
                       ),
@@ -310,6 +367,27 @@ class ShowList extends StatelessWidget {
               ),
             );
           }),
+      Container(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+        child: TextField(
+          controller: editingController,
+          onChanged: (value) {
+                  filterSearchResults(value);
+                },
+          decoration: InputDecoration(
+            //labelText: "Search",
+            filled: true,
+            fillColor: Colors.white,
+            hintText: "Search",
+            prefixIcon: Icon(Icons.search),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(25.0),
+              ),
+            ),
+          ),
+        ),
+      ),
     ]);
 
     /*return GridView.builder(

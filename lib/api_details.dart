@@ -40,7 +40,7 @@ class DetailShow {
         name: parsedJson['name'],
         type: parsedJson['type'],
         language: parsedJson['language'],
-        summary: parsedJson['summary'],
+        summary: parsedJson['summary'] == null ? "" : parsedJson['summary'],
         officialSite: parsedJson['officialSite'],
         premiered: parsedJson['premiered'],
         rating: Rating?.fromJson(parsedJson['rating']),
