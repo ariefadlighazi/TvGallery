@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'api_repsonse.dart';
 import 'api_details.dart';
-
+import 'api_details_test.dart';
 
 class MovieDetailBloc {
 
@@ -23,7 +23,7 @@ class MovieDetailBloc {
     movieDetailSink.add(ApiResponse.loading('Loading'));
     try {
       DetailShow details =
-          await DetailShow.connectToAPI(selectedMovie.toString());
+          await ApiEngine().fetchMovieDetail(selectedMovie.toString());
       movieDetailSink.add(ApiResponse.completed(details));
     } catch (e) {  
       movieDetailSink.add(ApiResponse.error(e.toString()));

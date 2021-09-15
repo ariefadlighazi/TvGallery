@@ -5,6 +5,11 @@ import 'package:http/http.dart' as http;
 
 Map<String, dynamic> jsonData = '{"medium": "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg","original": "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"}' as Map<String, dynamic>;
 
+DetailShow parseDetailList(String responseBody) {
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+  return parsed.map<DetailShow>((object) => DetailShow.fromJson(object));
+}
 class DetailShow {
   final String name, type, language, premiered, officialSite, summary, url;
   final ShowImage showImage;
@@ -53,14 +58,14 @@ class DetailShow {
         );
   }
 
-  static Future<DetailShow> connectToAPI(String id) async {
+  /*static Future<DetailShow> connectToAPI(String id) async {
     String apiURL = "http://api.tvmaze.com/shows/" + id + "?embed=cast";
 
     var apiResult = await http.get(Uri.parse(apiURL));
     var jsonObject = json.decode(apiResult.body);
 
     return DetailShow.fromJson(jsonObject);
-  }
+  }*/
 }
 
 class ShowImage {

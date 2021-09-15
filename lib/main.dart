@@ -2,14 +2,17 @@ import 'dart:async';
 import 'dart:convert';
 //import 'dart:math';
 
+import 'api_details_test.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:latian_jsonparse/api_details_test.dart';
 import 'package:latian_jsonparse/show_details.dart';
 
 import 'api_details.dart';
+import 'models/movie_list_model.dart';
 
-Future<List<ListShow>> fetchList(http.Client client) async {
+/*Future<List<ListShow>> fetchList(http.Client client) async {
   final response =
       await client.get(Uri.parse('https://api.tvmaze.com/schedule?country=US'));
 
@@ -73,7 +76,7 @@ class ShowImage {
     );
   }
 }
-
+*/
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -116,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Stack(children: [
         FutureBuilder<List<ListShow>>(
-          future: fetchList(http.Client()),
+          future: ApiEngine().fetchMovieList(),
           builder: (context, snapshot) {
             if (snapshot.hasError) print(snapshot.error);
 
