@@ -1,82 +1,15 @@
-import 'dart:async';
-import 'dart:convert';
 //import 'dart:math';
 
 import 'api_details_test.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:latian_jsonparse/api_details_test.dart';
 import 'package:latian_jsonparse/show_details.dart';
 
 import 'api_details.dart';
 import 'models/movie_list_model.dart';
 
-/*Future<List<ListShow>> fetchList(http.Client client) async {
-  final response =
-      await client.get(Uri.parse('https://api.tvmaze.com/schedule?country=US'));
 
-  // Use the compute function to run parsePhotos in a separate isolate.
-  return compute(parseList, response.body);
-}
-
-// A function that converts a response body into a List<ListShow>.
-List<ListShow> parseList(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-
-  return parsed.map<ListShow>((object) => ListShow.fromJson(object)).toList();
-}
-
-class ListShow {
-  final String score;
-  final Show show;
-
-  ListShow({this.score, this.show});
-
-  factory ListShow.fromJson(Map<String, dynamic> object) {
-    return ListShow(
-      score: object['score'].toString(),
-      show: Show.fromJson(object['show']),
-    );
-  }
-}
-
-class Show {
-  final String name, id, premiered;
-  final List<String> genre;
-  //String medium;
-  final ShowImage image;
-
-  Show({this.id, this.name, this.premiered, this.image, this.genre});
-
-  factory Show.fromJson(Map<String, dynamic> object) {
-    print(object['name']);
-    return Show(
-      id: object['id'].toString(),
-      name: object['name'] == null ? "" : object['name'] as String,
-      premiered:
-          object['premiered'] == null ? "" : object['premiered'] as String,
-      image: ShowImage?.fromJson(object['image'] ??= object['rating']),
-      genre: List<String>.from(object['genres']),
-    );
-  }
-}
-
-class ShowImage {
-  final String medium;
-  final String original;
-
-  ShowImage({this.medium, this.original});
-
-  factory ShowImage.fromJson(Map<String, dynamic> object) {
-    print(object['medium']);
-    return ShowImage(
-      medium: object['medium'] == null ? "" : object['medium'],
-      original: object['original'] == null ? "" : object['original'],
-    );
-  }
-}
-*/
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -146,20 +79,17 @@ class _ShowListState extends State<ShowList> {
   DetailShow detailShow;
   TextEditingController editingController = TextEditingController();
 
+  // ignore: deprecated_member_use
   var items = List<dynamic>();
-  String search = "anD";
+  //String search = "anD";
   void initState() {
     items.addAll(widget.shows);
-    /*for (int i = 0; i < widget.shows.length; i++) {
-        ListShow data = widget.shows[i];
-        if (data.show.name.toLowerCase().contains(search.toLowerCase())) {
-          items.add(data);
-        }
-    }*/
+    
     super.initState();
   }
   
 void filterSearchResults(String query) {
+    // ignore: deprecated_member_use
     List<dynamic> dummySearchList = List<dynamic>();
     //dummySearchList.addAll(widget.shows);
     if(query.isNotEmpty) {

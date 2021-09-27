@@ -1,5 +1,4 @@
 import 'package:flutter_html/flutter_html.dart';
-import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'api_repsonse.dart';
@@ -337,6 +336,7 @@ class Error extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8),
+          // ignore: deprecated_member_use
           RaisedButton(
             color: Colors.redAccent,
             child: Text(

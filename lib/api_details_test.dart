@@ -1,9 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
 
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'api_details.dart';
 import 'models/movie_list_model.dart';
 
@@ -15,6 +12,7 @@ class ApiEngine {
     _dio = Dio();
   }
 
+  // ignore: missing_return
   Future<List<ListShow>> fetchMovieList() async {
     try {
       //Response response = await _dio.get(_url);
@@ -29,6 +27,7 @@ class ApiEngine {
     }
   }
 
+  // ignore: missing_return
   Future<DetailShow> fetchMovieDetail(String id) async {
     try {
       String apiURL = "http://api.tvmaze.com/shows/" + id + "?embed=cast";
