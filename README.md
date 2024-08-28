@@ -1,6 +1,6 @@
 # TVGallery
 
-A new Flutter project.
+A new Flutter project that showing lists and details of TV shows/Series that is currently showing.
 
 ## Getting Started
 
